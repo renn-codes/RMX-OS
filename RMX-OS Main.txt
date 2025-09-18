@@ -1,0 +1,61 @@
+#==============================================================================
+# ** Main
+#------------------------------------------------------------------------------
+#  Runs the entire system.
+#==============================================================================
+
+ERROR_LOG_FILE = 'Error.log' # leave empty for no log
+
+def mod_error(error)
+  # load scripts
+  scripts = load_data('Data/Scripts.rxdata')
+  bt = error.backtrace.clone
+  # change backtrace display to show script names
+  bt.each_index {|i| bt[i] = bt[i].sub(/\ASection(\d+)/) {scripts[$1.to_i][1]} + "\n"}
+  # new error message
+  message = error.message + "\n" + bt.join('')
+  # write to file if file defined
+  if ERROR_LOG_FILE != ''
+    File.open(ERROR_LOG_FILE, 'a') {|f| f.write("#{Time.now.to_s}:\n#{message}\n")}
+  end
+  return message
+end
+
+begin
+  # loading game data
+  $data_actors        = load_data('Data/Actors.rxdata')
+  $data_classes       = load_data('Data/Classes.rxdata')
+  $data_skills        = load_data('Data/Skills.rxdata')
+  $data_items         = load_data('Data/Items.rxdata')
+  $data_weapons       = load_data('Data/Weapons.rxdata')
+  $data_armors        = load_data('Data/Armors.rxdata')
+  $data_enemies       = load_data('Data/Enemies.rxdata')
+  $data_troops        = load_data('Data/Troops.rxdata')
+  $data_states        = load_data('Data/States.rxdata')
+  $data_animations    = load_data('Data/Animations.rxdata')
+  $data_tilesets      = load_data('Data/Tilesets.rxdata')
+  $data_common_events = load_data('Data/CommonEvents.rxdata')
+  $data_system        = load_data('Data/System.rxdata')
+  # prepare for transition
+  Graphics.freeze
+  # activate the network
+  $network = RMXOS::Network.new
+  # active connection scene
+  $scene = Scene_Servers.new
+  # call main for active scene
+  $scene.main while $scene != nil
+  # disconnection
+  $network.disconnect
+  # fade out
+  Graphics.transition(20)
+  Graphics.update
+rescue SyntaxError
+  $!.message.sub!($!.message, mod_error($!))
+  raise
+rescue
+  $!.message.sub!($!.message, mod_error($!))
+  raise
+ensure
+  # disconnection
+  $network.disconnect
+end

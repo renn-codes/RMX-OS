@@ -1,0 +1,184 @@
+#:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=
+# RPG Maker XP Online System (RMX-OS)
+#------------------------------------------------------------------------------
+# Author: Blizzard
+#:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=
+# 
+#   This work is licensed under BSD License 2.0:
+# 
+# #----------------------------------------------------------------------------
+# #  
+# # Copyright (c) Boris "Blizzard" Mikić
+# # All rights reserved.
+# # 
+# # Redistribution and use in source and binary forms, with or without
+# # modification, are permitted provided that the following conditions are met:
+# # 
+# # 1.  Redistributions of source code must retain the above copyright notice,
+# #     this list of conditions and the following disclaimer.
+# # 
+# # 2.  Redistributions in binary form must reproduce the above copyright
+# #     notice, this list of conditions and the following disclaimer in the
+# #     documentation and/or other materials provided with the distribution.
+# # 
+# # 3.  Neither the name of the copyright holder nor the names of its
+# #     contributors may be used to endorse or promote products derived from
+# #     this software without specific prior written permission.
+# # 
+# # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# # ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+# # LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# # CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# # SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# # INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# # POSSIBILITY OF SUCH DAMAGE.
+# #  
+# #----------------------------------------------------------------------------
+# 
+#   You may use this script for both non-commercial and commercial products
+#   without limitations as long as you fulfill the conditions presented by the
+#   above license. The "complete" way to give credit is to include the license
+#   somewhere in your product (e.g. in the credits screen), but a "simple" way
+#   is also acceptable. The "simple" way to give credit is as follows:
+# 
+#     RPG Maker XP Online System licensed under BSD License 2.0
+#     Copyright (c) Boris "Blizzard" Mikić
+# 
+#   Alternatively, if your font doesn't support diacritic characters, you may
+#   use this variant:
+# 
+#     RPG Maker XP Online System licensed under BSD License 2.0
+#     Copyright (c) Boris "Blizzard" Mikic
+# 
+#   In general other similar variants are allowed as long as it is clear who
+#   the creator is (e.g. "RMX-OS created by Blizzard" is
+#   acceptable). But if possible, prefer to use one of the two variants listed
+#   above.
+# 
+#   If you fail to give credit and/or claim that this work was created by you,
+#   this may result in legal action and/or payment of damages even though this
+#   work is free of charge to use normally.
+# 
+#:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=
+# 
+# Information:
+# 
+#   There is a documentation for this system. Read it in order to learn how to
+#   use this system. A server also comes with this system.
+# 
+# 
+# If you find any bugs, please report them here:
+# http://forum.chaos-project.com
+#:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=
+
+#==============================================================================
+# module RMXOS
+#------------------------------------------------------------------------------
+# Main module for all RMX-OS classes and procedures.
+#==============================================================================
+
+module RMXOS
+  
+  #============================================================================
+  # module RMXOS::Options
+  #----------------------------------------------------------------------------
+  # Contains options used for the game that can be set up.
+  #============================================================================
+
+  module Options
+  
+    SERVERS = []
+    SAVE_DATA = {}
+    CREATION_DATA = {}
+    #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    # General
+    #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    GAME_VERSION = 1.0
+    #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    # Server Connection Settings
+    #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    SERVER_REFRESH = 400
+    SERVER_TIMEOUT = 200
+    SERVERS.push(['Localhost', '127.0.0.1', 54269])
+    #SERVERS.push(['BlizzDev', '88.207.40.168', 54269])
+    #SERVERS.push(['LAN', '192.168.0.2', 54269])
+    #SERVERS.push(['My Server', 'www.myserver.net', 54269])
+    #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    # Security
+    #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    RESERVED_USERNAMES = ['admin', 'root', 'moderator', 'server', 'guild',
+        'none']
+    RESERVED_GUILDNAMES = ['admin', 'root', 'moderator', 'server', 'guild',
+        'none']
+    ENCRYPTION_SALT = 'XS'
+    #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    # Network
+    #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    PING_TIMEOUT = 1
+    #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    # System
+    #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    USERPASS_MIN_LENGTH = 3
+    USERPASS_MAX_LENGTH = 16
+    CHATINPUT_WIDTH = 640
+    CHATBOX_WIDTH = 640
+    CHATBOX_LINES = 6
+    CHATINPUT_MAX_LENGTH = 200
+    PM_MAX_LENGTH = 200
+    GUILDNAME_MAX_LENGTH = 32
+    CHAT_BUBBLES = true
+    REMEMBER_LOGIN = true
+    DISABLED_CHAT_COMMANDS = []
+    AUTOSAVE_FREQUENCY = 30
+    GUILD_NAME_SPRITES = true
+    LEGACY_SAVE_METHOD = false
+    #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    # Exchange Data
+    #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    EXCHANGE_VARIABLES = ['@character_name', '@x', '@y', '@direction',
+        '@move_speed', '@walk_anime', '@step_anime', '@real_x', '@real_y',
+        '@pattern']
+    #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    # Save Data
+    # - see the documentation to learn how to set up which data is being saved
+    #   by RMX-OS.
+    #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    # save container variable definitions
+    SAVE_CONTAINERS = [
+        '$game_system',
+        '$game_switches',
+        '$game_variables',
+        '$game_self_switches',
+        '$game_party',
+        '$game_actors',
+        '$game_map',
+        '$game_player',
+        'Graphics.frame_count'
+    ]
+    # general save data setup
+    SAVE_DATA['Graphics.frame_count'] = []
+    SAVE_DATA[Game_System] = ['@timer', '@timer_working', '@menu_disabled']
+    SAVE_DATA[Game_Switches] = ['@data']
+    SAVE_DATA[Game_Variables] = ['@data']
+    SAVE_DATA[Game_SelfSwitches] = ['@data']
+    SAVE_DATA[Game_Party] = ['@gold', '@steps', '@actors', '@items',
+        '@weapons', '@armors']
+    SAVE_DATA[Game_Actors] = ['@data']
+    SAVE_DATA[Game_Map] = ['@map_id']
+    SAVE_DATA[Game_Player] = ['@x', '@y', '@real_x', '@real_y',
+        '@character_name', '@encounter_count']
+    SAVE_DATA[Game_Actor] = ['@actor_id', '@name', '@character_name',
+        '@character_hue', '@class_id', '@weapon_id', '@armor1_id',
+        '@armor2_id', '@armor3_id', '@armor4_id', '@level', '@exp', '@skills',
+        '@hp', '@sp', '@states', '@maxhp_plus', '@maxsp_plus', '@str_plus',
+        '@dex_plus', '@agi_plus', '@int_plus']
+    # for all classes that must have default arguments specified
+    CREATION_DATA[Game_Actor] = '1'
+  
+  end
+  
+end
